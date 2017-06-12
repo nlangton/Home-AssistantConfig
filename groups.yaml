@@ -1,0 +1,259 @@
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                VIEWS                                             #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+default_view:
+  view: yes
+  entities:
+    - group.master_bedroom
+    - group.jordans_room
+    - group.living_room
+    - group.dining_room
+    - group.kitchen
+    - group.bathroom
+    - group.alarm_sensors
+    - group.natgas_smoke_sensors
+    - group.device_trackers
+    - group.climate_control
+    - group.zwave
+    - group.time_date
+    - group.battery_level
+    - group.cameras
+    - group.network
+   
+masterbedroomtab:
+  name: Master Bedroom
+  view: yes
+  entities:
+    - group.master_bedroom
+
+bathroomtab:
+  name: Bathroom
+  view: yes
+  entities:
+    - group.bathroom
+
+kitchentab:
+  name: Kitchen
+  view: yes
+  entities:
+    - group.kitchen
+
+jordansroomtab:
+  name: Jordans Room
+  view: yes
+  entities:
+    - group.jordans_room
+
+livingroomtab:
+  name: Living Room
+  view: yes
+  entities:
+    - group.living_room
+    - group.climate_control
+
+
+diningroomtab:
+  name: Dining Room
+  view: yes
+  entities:
+    - group.dining_room
+    
+securitytab:
+  name: Securtity Control
+  view: yes
+  entities:
+    - group.alarm_sensors
+    - group.natgas_smoke_sensors
+    - group.cameras
+    - group.device_trackers
+    - group.zwave
+
+weathertab:
+  name: Weather
+  view: yes
+  entities:
+    - group.weather
+
+othertab:
+  name: Other
+  view: yes
+  entities:
+    - group.time_date
+    - group.battery_level
+    - group.network
+    - group.raspberry_pi_sensors
+
+    
+automationtab:
+  name: Automation
+  view: yes
+  entities:
+    - automation.disarmed_off
+    - automation.trigger_alarm_while_away
+    - automation.trigger_siren_when_smokegas_alarm_activates 
+    - automation.trigger_alarm_while_home
+    - automation.triggered_flash
+    - automation.update_available_notifications
+    - automation.heal_at_231am
+    - automation.soft_reset_at_230am
+
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                GROUPS                                            #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+weather:
+  name: Weather Underground
+  control: hidden 
+  entities:
+    - sensor.pws_alerts
+    - sensor.pws_temp_c
+    - sensor.pws_dewpoint_c
+    - sensor.pws_feelslike_c
+    - sensor.pws_heat_index_c
+    - sensor.pws_elevation
+    - sensor.pws_location
+    - sensor.pws_observation_time
+    - sensor.pws_precip_1hr_metric
+    - sensor.pws_precip_today_metric
+    - sensor.pws_pressure_mb
+    - sensor.pws_pressure_trend
+    - sensor.pws_relative_humidity
+    - sensor.pws_station_id
+    - sensor.pws_solarradiation
+    - sensor.pws_UV
+    - sensor.pws_visibility_km
+    - sensor.pws_weather
+    - sensor.pws_wind_degrees
+    - sensor.pws_wind_dir
+    - sensor.pws_wind_gust_kph
+    - sensor.pws_wind_kph
+    - sensor.yr_symbol
+    - sun.sun
+
+device_trackers:
+  name: Device Trackers
+  control: hidden
+  entities:
+    - device_tracker.nicks_iphone
+    - sensor.nicks_mi_band
+
+living_room:
+  name: living Room
+  control: hidden
+  entities:
+    - switch.plug_158d00012aeb6b
+    - media_player.apple_tv
+    - media_player.kodi
+
+kitchen:
+  name: Kitchen
+  control: hidden
+  entities:
+    - binary_sensor.natgas_sensor_158d00012ded42
+    - binary_sensor.smoke_sensor_158d000153979f
+
+dining_room:
+  name: Dining Room
+  control: hidden
+  entities:
+    - switch.plug_158d00012dafbe
+
+
+master_bedroom:
+  name: Master Bedroom
+  control: hidden
+  entities:
+    - light.yeelight_white_f0b42995300c
+
+bathroom:
+  name: Bathroom
+  control: hidden
+  entities:
+    - light.yeelight_white_f0b42995121f
+
+jordans_room:
+  name: Jordans Room
+  control: hidden
+  entities:
+    - binary_sensor.switch_158d0000e74d51
+
+alarm_sensors:
+  name: Alarm Sensors
+  control: hidden
+  entities:
+    - alarm_control_panel.ha_alarm
+    - light.gateway_light_f0b42999c33a
+    - sensor.illumination_f0b42999c33a
+    - binary_sensor.door_window_sensor_158d0000f4eab1
+    - binary_sensor.motion_sensor_158d0000f273e3
+    - binary_sensor.motion_sensor_158d0000f70c48
+
+natgas_smoke_sensors:
+  name: NatGas & Smoke Sensors
+  control: hidden
+  entities:
+    - binary_sensor.natgas_sensor_158d00012ded42
+    - binary_sensor.smoke_sensor_158d000153979f
+
+zwave:
+  name: ZWAVE
+  entities:
+    - zwave.aeotec_zw090_zstick_gen5_us_1
+    - zwave.aeotec_zw080_siren_gen5_4
+    - switch.aeotec_zw080_siren_gen5_switch_4_0
+
+
+climate_control:
+  name: Climate Control
+  control: hidden
+  entities:
+    - sensor.temperature_158d0000fbfd6a
+    - sensor.humidity_158d0000fbfd6a
+
+time_date:
+  name: Time and Date
+  control: hidden
+  entities:
+    - sensor.time
+    - sensor.date
+
+battery_level:
+  name: Battery Level
+  control: hidden
+  entities:
+    - sensor.front_door_battery
+    - sensor.motion_sensor_1_battery
+    - sensor.motion_sensor_2_battery
+    - sensor.switch_battery
+    - sensor.temperature_sensor_battery
+    - sensor.smoke_detector_battery
+    - sensor.nicks_iphone_battery_level
+    - sensor.nicks_iphone_battery_state
+
+raspberry_pi_sensors:
+  name: Raspberry Pi Sensors
+  control: hidden
+  entities:
+    - sensor.command_sensor
+
+
+cameras:
+  name: Cameras
+  entities:
+    - camera.raspberry_pi_cam
+
+network:
+  name: Network
+  entities:
+    - weblink.home_assistant
+    - weblink.router

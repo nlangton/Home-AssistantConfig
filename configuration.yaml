@@ -1,0 +1,154 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret time_zone
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Uncomment this to add a password (recommended!)
+    api_password: !secret http_password
+  # Uncomment this if you are using SSL or running in Docker etc
+    ssl_certificate: !secret ssl_certificate
+    ssl_key: !secret ssl_key
+    base_url: !secret base_url
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Text to speech
+tts:
+  platform: google
+
+################################
+### Camera Configuration
+################################
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+camera:
+  - platform: ffmpeg
+    name: Raspberry Pi Cam
+    input: !secret camurl
+
+################################
+### Z-Wave Config
+################################
+
+zwave:
+  usb_path: /dev/ttyACM0
+
+################################
+### Kodi Config
+################################
+
+media_player:
+  - platform: kodi
+    host: 192.168.1.102
+    username: !secret kodiuser
+    password: !secret kodipassword
+    enable_websocket: true
+    turn_off_action: shutdown
+
+
+################################
+### Xiaomi Gateway
+################################
+
+# Xiaomi Gatway
+xiaomi:
+ gateways:
+   - sid:
+     key: !secret key
+
+################################
+### IOS Setup
+################################
+
+ios:
+
+################################
+### Mysql Config
+################################
+
+recorder:
+  purge_days: 5
+  db_url: !secret db_url
+  exclude:
+    domains:
+      - weblink
+      - updater
+    entities:
+      - sun.sun   # Don't record sun data
+
+################################
+### MQTT Config
+################################
+
+mqtt:
+  broker: 127.0.0.1
+  port: 1883
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+
+################################
+### Weblink Config
+################################
+
+weblink:
+  entities:
+    - name: Router
+      icon: mdi:router-wireless
+      url: http://192.168.1.1/
+    - name: Home Assistant
+      icon: mdi:home-assistant
+      url: https://home-assistant.io
+
+################################
+### Alarm Control Panel
+################################
+
+alarm_control_panel:
+  platform: manual
+  name: "HA Alarm"
+  code: !secret alarm_code
+  pending_time: 15
+  trigger_time: 1
+  disarm_after_trigger: true
+
+################################
+### Includes
+################################
+script: !include scripts.yaml
+automation: !include automations.yaml
+group: !include groups.yaml
+sensor: !include sensors.yaml

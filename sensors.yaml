@@ -1,0 +1,142 @@
+################################
+### YR
+################################
+
+ - platform: yr
+
+################################
+### Raspberry PI Monitoring
+################################
+
+ - platform: command_line
+   command: "cat /sys/class/thermal/thermal_zone0/temp"
+   unit_of_measurement: "°C"
+   value_template: '{{ value | multiply(0.001) | round(2) }}'
+ 
+################################
+### Other Monitoring
+################################
+
+
+################################
+### Room Presence
+################################
+
+ - platform: mqtt_room
+   device_id: 'f4:c8:d3:0b:e6:c4'
+   name: 'Nicks_MI_Band'
+   state_topic: 'room_presence'
+   timeout: 5
+   away_timeout: 60
+
+################################
+### Weather Underground
+################################
+ - platform: wunderground
+   api_key: 429baece39fbbc83
+   monitored_conditions:
+     - alerts
+     - temp_c
+     - dewpoint_c
+     - feelslike_c
+     - heat_index_c
+     - elevation
+     - location
+     - observation_time
+     - precip_1hr_metric
+     - precip_today_metric
+     - pressure_mb
+     - pressure_trend
+     - relative_humidity
+     - station_id
+     - solarradiation
+     - UV
+     - visibility_km
+     - weather
+     - wind_degrees
+     - wind_dir
+     - wind_gust_kph
+     - wind_kph
+
+################################
+### SSL Certificate Check
+################################
+ - platform: command_line
+   name: SSL cert expiry
+   unit_of_measurement: days
+   scan_interval: 10800
+   command: "ssl-cert-check -b -c /etc/letsencrypt/live/nmj.duckdns.org/cert.pem | awk '{ print $NF }'"
+
+################################
+### Time and Date
+################################
+ - platform: time_date
+   display_options:
+     - 'time'
+     - 'date'
+
+################################
+### Battery Check
+################################
+ - platform: template
+   sensors:
+     front_door_battery:
+       friendly_name: 'Front Door Sensor'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level %}
+              {{ states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level|round }}
+          {% else %}
+              {{ states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.binary_sensor.door_window_sensor_158d0000f4eab1.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+     motion_sensor_1_battery:
+       friendly_name: 'Motion Sensor 1'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level %}
+              {{ states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level|round }}
+          {% else %}
+              {{ states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.binary_sensor.motion_sensor_158d0000f273e3.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+     motion_sensor_2_battery:
+       friendly_name: 'Motion Sensor 2'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level %}
+              {{ states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level|round }}
+          {% else %}
+              {{ states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.binary_sensor.motion_sensor_158d0000f70c48.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+     switch_battery:
+       friendly_name: 'Switch'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.binary_sensor.switch_158d0000e74d51.attributes.battery_level %}
+              {{ states.binary_sensor.switch_158d0000e74d51.attributes.battery_level|round }}
+          {% else %}
+              {{ states.binary_sensor.switch_158d0000e74d51.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.binary_sensor.switch_158d0000e74d51.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.binary_sensor.switch_158d0000e74d51.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.binary_sensor.switch_158d0000e74d51.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+     temperature_sensor_battery:
+       friendly_name: 'Temperature Sensor'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.sensor.temperature_158d0000fbfd6a.attributes.battery_level %}
+              {{ states.sensor.temperature_158d0000fbfd6a.attributes.battery_level|round }}
+          {% else %}
+              {{ states.sensor.temperature_158d0000fbfd6a.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.sensor.temperature_158d0000fbfd6a.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.sensor.temperature_158d0000fbfd6a.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.sensor.temperature_158d0000fbfd6a.attributes.battery_level|float / 10)|round*10}}{%- endif %}'
+     smoke_detector_battery:
+       friendly_name: 'Smoke Sensor'
+       unit_of_measurement: "%"
+       value_template: >
+          {%- if states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level %}
+              {{ states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level|round }}
+          {% else %}
+              {{ states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level }}
+          {%- endif %} 
+       icon_template: '{%- if  states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level <= 5 %}mdi:battery-outline{%- elif states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level >= 95 %}mdi:battery{% else %}mdi:battery-{{(states.binary_sensor.smoke_sensor_158d000153979f.attributes.battery_level|float / 10)|round*10}}{%- endif %}'

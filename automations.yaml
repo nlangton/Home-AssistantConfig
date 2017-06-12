@@ -1,0 +1,143 @@
+#########################################################
+#Trigger Siren When Smoke/Gas Alarm Activates
+#########################################################
+
+- alias: Trigger Siren When Smoke/Gas Alarm Activates
+  hide_entity: false
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.natgas_sensor_158d00012ded42
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.smoke_sensor_158d000153979f
+    to: 'on'
+  action:
+  - service: script.turn_on
+    entity_id: script.light_flash
+  - service: homeassistant.turn_on
+    entity_id: switch.aeotec_zw080_siren_gen5_switch_4_0
+  - service: xiaomi.play_ringtone
+    data:
+      ringtone_id: 20
+      gw_sid: f0b42999c33a
+      ringtone_vol: 20
+  - service: notify.ios_nicks_iphone
+    data:
+      message: Smoke/Gas Alarm Triggered
+
+#########################################################
+#Trigger Alarm While Away
+#########################################################
+
+- alias: Trigger Alarm While Away
+  hide_entity: true
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0000f4eab1
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d0000f273e3
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d0000f70c48
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.ha_alarm
+    state: armed_away
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.ha_alarm
+
+#########################################################
+#Trigger Alarm While Home
+#########################################################
+
+- alias: Trigger alarm while home
+  hide_entity: true
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0000f4eab1
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.ha_alarm
+    state: armed_home
+  action:
+  - service: alarm_control_panel.alarm_trigger
+    entity_id: alarm_control_panel.ha_alarm
+
+#########################################################
+#Trigger Alarm Light Flash
+#########################################################
+
+- alias: Triggered Flash
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.ha_alarm
+    to: triggered
+  action:
+  - service: script.turn_on
+    entity_id: script.light_flash
+  - service: homeassistant.turn_on
+    entity_id: switch.aeotec_zw080_siren_gen5_switch_4_0
+  - service: xiaomi.play_ringtone
+    data:
+      ringtone_id: 20
+      gw_sid: f0b42999c33a
+      ringtone_vol: 20
+  - service: notify.ios_nicks_iphone
+    data:
+      message: Home Alarm Triggered
+
+#########################################################
+#Disarm Alarm
+#########################################################
+
+- alias: Disarmed Off
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.ha_alarm
+    to: disarmed
+  action:
+  - service: script.turn_off
+    entity_id: script.light_loop
+  - service: homeassistant.turn_off
+    entity_id: switch.aeotec_zw080_siren_gen5_switch_4_0
+  - service: notify.ios_nicks_iphone
+    data:
+      message: Home Alarm Reset
+
+#########################################################
+#Update Available Notifications
+#########################################################
+
+- alias: Update Available Notifications
+  trigger:
+    platform: state
+    entity_id: updater.updater
+  action:
+    service: notify.notify
+    data:
+      message: Update for Home Assistant is available.
+
+#########################################################
+#Z-Wave Reset
+#########################################################
+
+- alias: soft reset at 2:30am
+  trigger:
+    platform: time
+    at: '2:30:00'
+  action:
+    service: zwave.soft_reset
+
+
+- alias: heal at 2:31am
+  trigger:
+    platform: time
+    at: '2:31:00'
+  action:
+    service: zwave.heal_network
